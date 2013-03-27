@@ -3,6 +3,8 @@
 namespace Flasher;
 
 use Laravel\Messages;
+use Laravel\Session;
+
 
 class Flasher {
 
@@ -25,7 +27,7 @@ class Flasher {
 	}
 
 
-	public static function first($type=null)
+	public static function first($type='default')
 	{
 		if ( $flasher = Session::get( static::$sess_key ) ) {
 			return $flasher->first( $type );
@@ -33,10 +35,18 @@ class Flasher {
 	}
 
 
-	public static function get($type=null)
+	public static function get($type='default')
 	{
 		if ( $flasher = Session::get( static::$sess_key ) ) {
 			return $flasher->get( $type );
+		}
+	}
+
+
+	public static function all()
+	{
+		if ( $flasher = Session::get( static::$sess_key ) ) {
+			return $flasher->all();
 		}
 	}
 
@@ -45,5 +55,6 @@ class Flasher {
 	{
 		static::add( $method, $parameters[0] );
 	}
+
 
 }
