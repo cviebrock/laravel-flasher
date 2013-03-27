@@ -1,4 +1,4 @@
 laravel-flasher
 ===============
 
-Simple message flasher for the Laravel framework
+Simple message flasher for the Laravel framework.
