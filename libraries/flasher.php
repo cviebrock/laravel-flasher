@@ -12,48 +12,79 @@ class Flasher {
 	private static $sess_key = 'flasher';
 
 
+	// default type
+	private static $default_type = 'default';
 
-	public static function add($message, $type='default' )
+
+	private static function load()
+	{
+		if ( $data = Session::get( static::$sess_key ) ) {
+			return unserialize($data);
+		}
+		return array();
+	}
+
+
+	private static function filter( array $array, $type = null )
+	{
+		if ( $type )
+		{
+			$array = array_filter($array, function($msg) use ($type) {
+				return $msg->type == $type;
+			});
+		}
+		return $array;
+	}
+
+
+	private static function flash( $data )
+	{
+		return Session::flash( static::$sess_key, serialize($data) );
+	}
+
+
+
+	public static function add($message, $type = null )
 	{
 
-		$flasher = Session::get( static::$sess_key, new Messages );
+		$flasher = static::load();
 
 		$message = new Message($message, $type);
 
-		$flasher->add( $type, $message );
+		$flasher[] = $message;
 
-		Session::flash( static::$sess_key, $flasher );
+		static::flash( $flasher );
 
 	}
 
 
-	public static function first($type='default')
+	public static function all( $type = null )
 	{
-		if ( $flasher = Session::get( static::$sess_key ) ) {
-			return $flasher->first( $type );
-		}
+		return static::filter( static::load(), $type );
 	}
 
-
-	public static function get($type='default')
+	public static function first( $type = null )
 	{
-		if ( $flasher = Session::get( static::$sess_key ) ) {
-			return $flasher->get( $type );
-		}
+		$all = static::all($type);
+		return array_shift( $all );
 	}
 
-
-	public static function all()
+	public static function last( $type = null )
 	{
-		if ( $flasher = Session::get( static::$sess_key ) ) {
-			return $flasher->all();
-		}
+		$all = static::all($type);
+		return array_pop( $all );
+	}
+
+	public static function has( $type = null )
+	{
+		$all = static::all($type);
+		return count( $all ) > 0;
 	}
 
 
 	public static function __callStatic($method, $parameters)
 	{
-		static::add( $method, $parameters[0] );
+		static::add( $parameters[0], $method );
 	}
 
 

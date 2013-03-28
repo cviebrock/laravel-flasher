@@ -1,4 +1,3 @@
-<?php
-
-dd( Flasher::all() );
-
+@foreach( Flasher::get() as $flash )
+{{ $flash }}
+@endforeach
