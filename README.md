@@ -60,6 +60,12 @@ In your views, all you need to see the flashed messages is:
 @render('flasher::flashes')
 ```
 
+Or render them directly with:
+
+```php
+{{ Flasher::showall() }}
+```
+
 
 
 ## Customizing
@@ -156,9 +162,21 @@ echo $msg->format('<p class="alert alert-:type">:message</p>');
 
 Calling the `format()` method without an argument will use whatever is defined by the `format` key in `application/config/flasher.php`, falling back to the key defined in `bundles/flasher/config/flasher.php` (which is the same as the above example).
 
-Finally, the `Flasher\Message` object has a magic `__toString()` which just calls `format()`
-with no arguments (i.e. use the configuration format).
+Finally, the `Flasher\Message` object has a magic `__toString()` which just calls `format()` with no arguments (i.e. use the configuration format).
 
+We've added a quick way to display all the formatted messages (optionally filtering on type):
+
+```php
+echo Flasher::showall($type);
+```
+
+This is pretty much equivalent to:
+
+```php
+foreach( Flasher::all($type) as $message ) {
+	echo $message->format();
+}
+```
 
 
 ## Bugs and Suggestions

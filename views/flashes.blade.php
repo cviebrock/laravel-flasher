@@ -1,3 +1,1 @@
-@foreach( Flasher::get() as $flash )
-{{ $flash }}
-@endforeach
+{{ Flasher::showall() }}
