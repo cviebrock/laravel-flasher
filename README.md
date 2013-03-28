@@ -1,6 +1,6 @@
 # Laravel-Flasher
 
-Simple flash message handler for the [Laravel](http://laravel.com) framework.
+A simple flash-message handler for the [Laravel](http://laravel.com) framework.
 
 
 ## Installation
@@ -11,10 +11,22 @@ Install the bundle with artisan:
 php artisan bundle::install flasher
 ```
 
-Then update your `application/bundles.php` file with:
+Update your `application/bundles.php` file:
 
 ```php
 'flasher' => array( 'auto' => true ),
+```
+
+And add an alias to `application/config/application.php` for ease-of-use:
+
+```php
+	...
+	'aliases' => array(
+		...
+		'Flasher'     => 'Flasher\\Flasher',
+		...
+	),
+	...
 ```
 
 

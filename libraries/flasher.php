@@ -1,21 +1,31 @@
-<?php
+<?php namespace Flasher;
 
-namespace Flasher;
+/**
+ * Laravel-Flasher - A simple flash-message handler
+ *
+ * @package  Laravel-Flasher
+ * @version  0.0.1
+ * @author   Colin Viebrock <colin@viebrock.ca>
+ */
 
-use Laravel\Messages;
+
 use Laravel\Session;
 
 
 class Flasher {
 
-	// the session key
+
+	/**
+	 * The session key when Flasher messages are stored.
+	 */
 	private static $sess_key = 'flasher';
 
 
-	// default type
-	private static $default_type = 'default';
-
-
+	/**
+	 * Load the array of Flasher messages from the session, or return an empty.
+	 *
+	 * @return array
+	 */
 	private static function load()
 	{
 		if ( $data = Session::get( static::$sess_key ) ) {
@@ -25,6 +35,13 @@ class Flasher {
 	}
 
 
+	/**
+	 * Filter an array of Flasher messages by type.
+	 *
+	 * @param  array  $array
+	 * @param  string $type
+	 * @return array
+	 */
 	private static function filter( array $array, $type = null )
 	{
 		if ( $type )
@@ -37,13 +54,24 @@ class Flasher {
 	}
 
 
-	private static function flash( $data )
+	/**
+	 * Save the Flasher message array to the session.
+	 *
+	 * @param  array $array
+	 * @return void
+	 */
+	private static function flash( $array )
 	{
-		return Session::flash( static::$sess_key, serialize($data) );
+		Session::flash( static::$sess_key, serialize( $array ) );
 	}
 
 
-
+	/**
+	 * Add a message to the Flasher message array
+	 *
+	 * @param string $message
+	 * @param string $type
+	 */
 	public static function add($message, $type = null )
 	{
 
@@ -58,31 +86,64 @@ class Flasher {
 	}
 
 
+	/**
+	 * Return all the Flasher messages, optionally filtering on type.
+	 *
+	 * @param  string $type
+	 * @return array
+	 */
 	public static function all( $type = null )
 	{
 		return static::filter( static::load(), $type );
 	}
 
+
+	/**
+	 * Return the first Flasher message, optionally filtering on type.
+	 *
+	 * @param  string $type
+	 * @return Flasher\Message
+	 */
 	public static function first( $type = null )
 	{
 		$all = static::all($type);
 		return array_shift( $all );
 	}
 
+
+	/**
+	 * Return the last Flasher message, optionally filtering on type.
+	 *
+	 * @param  string $type
+	 * @return Flasher\Message
+	 */
 	public static function last( $type = null )
 	{
 		$all = static::all($type);
 		return array_pop( $all );
 	}
 
+
+	/**
+	 * Return whether or not there are any Flasher messages, or whether there
+	 * are any messages of a given type.
+	 *
+	 * @param  string $type
+	 * @return boolean
+	 */
 	public static function has( $type = null )
 	{
 		$all = static::all($type);
 		return count( $all ) > 0;
 	}
 
-
-	public static function __callStatic($method, $parameters)
+	/**
+	 * Magic method to dynamically store a Flasher message.
+	 *
+	 * @param  string $method
+	 * @param  array $parameters 	First element is the message
+	 */
+	public static function __callStatic( $method, $parameters )
 	{
 		static::add( $parameters[0], $method );
 	}
