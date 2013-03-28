@@ -1,10 +1,5 @@
 # Changelog
 
-## v1.0.0-alpha2 - 27-Mar-2013
+## v1.0.0-beta - 27-Mar-2013
 
-- fix some typos
-
-
-## v1.0.0-alpha - 27-Mar-2013
-
-- initial release
+- initial public release
