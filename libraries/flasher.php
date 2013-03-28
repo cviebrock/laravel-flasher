@@ -4,7 +4,7 @@
  * Laravel-Flasher - A simple flash-message handler
  *
  * @package  Laravel-Flasher
- * @version  1.0.0-alpha2
+ * @version  1.0.0-beta
  * @author   Colin Viebrock <colin@viebrock.ca>
  */
 
@@ -83,6 +83,19 @@ class Flasher {
 
 		static::flash( $flasher );
 
+	}
+
+
+	/**
+	 * Return all the Flasher messages, optionally filtering on type,
+	 * formatted using the default format, and concatenated.
+	 *
+	 * @param  string $type
+	 * @return string
+	 */
+	public static function showall( $type = null )
+	{
+		return join( PHP_EOL, static::all($type) );
 	}
 
 
