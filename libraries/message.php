@@ -4,7 +4,7 @@
  * Laravel-Flasher - A simple flash-message handler
  *
  * @package  Laravel-Flasher
- * @version  0.0.1
+ * @version  1.0.0-alpha
  * @author   Colin Viebrock <colin@viebrock.ca>
  */
 
